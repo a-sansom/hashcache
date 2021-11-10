@@ -1,0 +1,54 @@
+<?php
+
+/**
+ * @file
+ * The hashcache module's non-class code, hook implementations etc.
+ */
+
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function hashcache_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.hashcache':
+      $output = '';
+      $output .= '<h3>' . t('About') . '</h3>';
+      $output .= '<p>' . t('The module demonstrates working with render array #cache properties via a number of examples.') . '</p>';
+      $output .= '<p>' . \Drupal\Core\Link::createFromRoute('Access the examples here', 'hashcache.default_controller_index')->toString() . '.</p>';
+      return $output;
+
+    default:
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function hashcache_theme($existing, $type, $theme, $path) {
+  return [
+    'avoid_expense' => [
+      'variables' => [
+        'time' => 0,
+        'preprocess_pause_duration' => 3,
+      ],
+    ],
+  ];
+}
+
+/**
+ * Implements template_preprocess_HOOK().
+ */
+function template_preprocess_avoid_expense(&$variables) {
+  // Pause to highlight (in the browser load time) when we're hitting the
+  // template preprocess.
+  //
+  // Could represent making an HTTP request to another system (via a custom
+  // Drupal service), to get data for display, for instance.s
+  //
+  // In the above case, by caching the output, we're showing that we're saving
+  // hitting an external API (or whatever takes time to do) each time, as the
+  // content is coming from cache.
+  sleep($variables['preprocess_pause_duration']);
+}

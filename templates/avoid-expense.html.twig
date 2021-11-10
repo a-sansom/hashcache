@@ -1,0 +1,28 @@
+{#
+/**
+ * @file
+ * Default template for 'avoid expense' example.
+ *
+ * Available variables:
+ * - time: UNIX timestamp.
+ * - preprocess_pause_duration: Seconds to pause in template preprocess function.
+ *
+ * @ingroup themeable
+ */
+#}
+
+<p>
+  Content here comes from the templates/avoid-expense.html.twig template.
+</p>
+<p>
+  template_preprocess_avoid_expense() in the .module file contains a {{ preprocess_pause_duration }} second pause when content is not retrieved from cache.
+</p>
+<p>
+  Time here (permanently cached) is: {{ time }}.
+</p>
+<p>
+  By defining that the render array item uses a Twig template to generate markup, with a "#theme" key/value, we are then able to define and implement a template_preprocess_HOOK() in the module.
+</p>
+<p>
+  This demonstrates if we have some (time) expensive operations that would be used to affect content/values output on the page, rather than execute them in the controller that builds the render array, we can move those operations into the template_preprocess_HOOK() function and implement caching on the render array item. This means that the expensive operations aren't always executed, as the template preprocess code is not always triggered, because the render array item is read from (Dynamic Page) cache on subsequent loads.
+</p>

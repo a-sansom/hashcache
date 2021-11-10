@@ -1,0 +1,5 @@
+services:
+
+  hashcache.lazy_content_builder:
+    class: Drupal\hashcache\LazyContentBuilder
+    arguments: ['@logger.factory', '@string_translation', '@current_user']

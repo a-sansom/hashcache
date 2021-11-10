@@ -1,0 +1,79 @@
+hashcache.default_controller_index:
+  path: '/hashcache'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::index'
+    _title: 'Render array #cache examples'
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheMaxAge:
+  path: '/hashcache/max-age'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheMaxAge'
+    _title: "#cache['max-age']"
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheContextsByUrlQueryArgs:
+  path: '/hashcache/contexts/url-query-args'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheContextsByUrlQueryArgs'
+    _title: "#cache['contexts']['url.query_args']"
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheContextsByUrlQueryArgsKey:
+  path: '/hashcache/contexts/url-query-args-key'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheContextsByUrlQueryArgsKey'
+    _title: "#cache['contexts']['url.query_args:&lt;key&gt;']"
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheTags:
+  path: '/hashcache/tags'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheTags'
+    _title: "#cache['tags']"
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheBubbling:
+  path: '/hashcache/bubbling'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheBubbling'
+    _title: 'Cached render array invalidation via "bubbling"'
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheAvoidBubblingWithCacheKeys:
+  path: '/hashcache/avoid-bubbling-keys'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheAvoidBubblingWithCacheKeys'
+    _title: 'Avoid cached render array invalidation via "bubbling" with #cache["keys"]'
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_cacheAvoidBubblingWithCacheKeysAndTags:
+  path: '/hashcache/no-bubbling-tags'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::cacheAvoidBubblingWithCacheKeysAndTags'
+    _title: 'Avoid cached render array invalidation via "bubbling" with #cache["keys"] and #cache["tags"]'
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_lazyBuilder:
+  path: '/hashcache/lazy-builder'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::lazyBuilder'
+    _title: 'Mix cached content with dynamic, uncached, content using a #lazy_builder'
+  requirements:
+    _permission: 'access content'
+
+hashcache.default_controller_avoidExpense:
+  path: '/hashcache/avoid-expense'
+  defaults:
+    _controller: '\Drupal\hashcache\Controller\DefaultController::avoidExpense'
+    _title: 'Mix "expensive" template-themed preprocessed cached content with semi-dynamic content'
+  requirements:
+    _permission: 'access content'
