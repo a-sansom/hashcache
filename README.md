@@ -21,3 +21,14 @@ Open the example(s) in one browser tab as an anonymous user, and then also a pri
 In both browser tabs/windows open the developer tools 'Network' tab, so you can see the page requests and the response headers, where the cached response debug headers will be visible.
 
 This should make it easier to understand what's happening when looking at each example route, as the response for both types of user can then be compared side by side.
+
+## Links
+
+The examples (at `/hashcache``) touch a few different subject areas. Below is a collection of a few of the links that were useful/relevant when putting them together:
+
+- https://dev.acquia.com/blog/drupal-8-performance-render-caching
+- https://drupalize.me/tutorial/render-api-overview?p=2766
+- https://www.drupal.org/docs/theming-drupal/twig-in-drupal/debugging-compiled-twig-templates
+- https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-Twig-cache
+- https://www.drupal.org/docs/drupal-apis/render-api/auto-placeholdering
+- https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21theme.api.php/group/themeable/9.2.x
