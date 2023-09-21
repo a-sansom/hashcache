@@ -865,7 +865,7 @@ class DefaultController extends ControllerBase {
       <ul>
         <li>Update the "iteration" value AND add a query string "&invalidate=hashcache_odd_items" to invalidate (and recalculate), and re-cache, the first and third list items</li>
         <li>Update the "iteration" value AND add a query string "?invalidate=hashcache_even_items" to invalidate (and recalculate), and re-cache, the second and fourth list items</li>
-        <li>Read page from cache, with only an ?iteration=num URL query string. The page will build, output, and cache the render array on first request. Subsequent requests will read the page from cache.</li>
+        <li>Read page from cache, with only an ?iteration=&lt;num&gt; URL query string. The page will build, output, and cache the render array on first request. Subsequent requests will read the page from cache.</li>
       </ul>
       <p>
         By using a unique #cache "keys" value for each render array element, but the same #cache "tags" value (of "hashcache_odd_items" or "hashcache_even_items") we\'re able to target multiple elements to be invalidated at the same time, without "bubbling" affecting other elements in the array.
