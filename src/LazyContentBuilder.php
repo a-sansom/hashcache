@@ -3,6 +3,7 @@
 namespace Drupal\hashcache;
 
 use Drupal\Core\Logger\LoggerChannelFactoryInterface;
+use Drupal\Core\Security\TrustedCallbackInterface;
 use Drupal\Core\Session\AccountProxyInterface;
 use Drupal\Core\StringTranslation\StringTranslationTrait;
 use Drupal\Core\StringTranslation\TranslationInterface;
@@ -10,7 +11,7 @@ use Drupal\Core\StringTranslation\TranslationInterface;
 /**
  * Class LazyContentBuilder.
  */
-class LazyContentBuilder {
+class LazyContentBuilder implements TrustedCallbackInterface {
 
   use StringTranslationTrait;
 
@@ -42,6 +43,13 @@ class LazyContentBuilder {
     $this->loggerFactory = $loggerFactory;
     $this->setStringTranslation($translation);
     $this->currentUser = $currentUser;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function trustedCallbacks() {
+    return ['usernameAndTimestamp'];
   }
 
   /**
