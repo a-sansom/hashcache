@@ -20,13 +20,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class DefaultController extends ControllerBase {
 
   /**
-   * Drupal's current user service.
-   *
-   * @var \Drupal\Core\Session\AccountProxy
-   */
-  protected $currentUser;
-
-  /**
    * Symfony's request stack service.
    *
    * @var \Symfony\Component\HttpFoundation\RequestStack
