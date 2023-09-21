@@ -100,11 +100,19 @@ class DefaultController extends ControllerBase {
     ');
 
     return [
+      '#type' => 'container',
+      '#cache' => [
+        // To get render cache debug output into page markup (when enabled - see
+        // README), we need/must supply render array '#cache' item with a 'keys'
+        // value.
+        'keys' => [
+          'hashcache_index'
+        ],
+        // Default is permanent if not supplied, but we're being explicit.
+        'max-age' => Cache::PERMANENT,
+      ],
       'description' => [
         '#markup' => $description,
-        '#cache' => [
-          'max-age' => Cache::PERMANENT,
-        ],
       ],
       'links' => [
         '#theme' => 'item_list',
@@ -120,9 +128,6 @@ class DefaultController extends ControllerBase {
           Link::createFromRoute("Mix cached content with dynamic, uncached, content using a #lazy_builder' (avoiding 'bubbling' invalidation)", 'hashcache.default_controller_lazyBuilder'),
           Link::createFromRoute("Mix 'expensive' template-themed preprocessed cached content with semi-dynamic cached content (avoiding 'bubbling' invalidation)", 'hashcache.default_controller_avoidExpense'),
         ],
-        '#cache' => [
-          'max-age' => Cache::PERMANENT,
-        ],
       ],
       'note' => [
         '#type' => 'link',
@@ -135,9 +140,6 @@ class DefaultController extends ControllerBase {
         ],
         '#prefix' => '<p>',
         '#suffix' => '</p>',
-      ],
-      '#cache' => [
-        'max-age' => Cache::PERMANENT,
       ],
     ];
   }
