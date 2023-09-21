@@ -253,7 +253,12 @@ class DefaultController extends ControllerBase {
       'description' => [
         '#markup' => $description,
         '#cache' => [
-          'max-age' => Cache::PERMANENT,
+          // Although the example here is about cache contexts, to get render
+          // cache debug output into page markup (when enabled - see README),
+          // we need/must supply render array '#cache' item with a 'keys' value.
+          'keys' => [
+            'url_query_args_description',
+          ],
         ],
       ],
       'content' => [
@@ -265,6 +270,9 @@ class DefaultController extends ControllerBase {
             '#tag' => 'p',
             '#value' => $this->t('Render array uses #cache with "contexts" key with "url.query_args":  @time', ['@time' => time()]),
             '#cache' => [
+              'keys' => [
+                'url_query_args_timestamp',
+              ],
               'contexts' => [
                 'url.query_args',
               ],
@@ -274,6 +282,14 @@ class DefaultController extends ControllerBase {
             '#type' => 'html_tag',
             '#tag' => 'p',
             '#value' => $this->t('Iteration query string value is @iteration.', ['@iteration' => $iteration]),
+            '#cache' => [
+              'keys' => [
+                'url_query_args_iteration',
+              ],
+              'contexts' => [
+                'url.query_args',
+              ],
+            ],
           ],
         ],
       ],
@@ -284,6 +300,14 @@ class DefaultController extends ControllerBase {
           Link::createFromRoute('Reload page, reading render array from cache', 'hashcache.default_controller_cacheContextsByUrlQueryArgs', ['iteration' => $iteration])->toRenderable(),
           Link::createFromRoute('Update query string "iteration" param value, invalidating render array', 'hashcache.default_controller_cacheContextsByUrlQueryArgs', ['iteration' => $iteration + 1])->toRenderable(),
         ],
+        '#cache' => [
+          'keys' => [
+            'url_query_args_links',
+          ],
+          'contexts' => [
+            'url.query_args',
+          ],
+        ],
       ],
       'docs_links' => [
         '#type' => 'link',
@@ -292,6 +316,11 @@ class DefaultController extends ControllerBase {
         '#options' => [
           'attributes' => [
             'target' => '_blank',
+          ],
+        ],
+        '#cache' => [
+          'keys' => [
+            'url_query_args_docs_links',
           ],
         ],
       ],
