@@ -12,7 +12,10 @@ A default, out of the box Drupal set up is assumed.
 
 Both the 'Internal Page Cache' and 'Dynamic Page Cache' modules enabled, as well as 'BigPipe'.
 
-Configuration change(s) to [output cache debug headers](https://www.drupal.org/docs/8/api/responses/cacheableresponseinterface#debugging).
+Configuration change(s) to:
+
+- [Output cache debug headers](https://www.drupal.org/docs/8/api/responses/cacheableresponseinterface#debugging) - `parameters.http.response.debug_cacheability_headers`
+- [Enable render cache debug output](https://www.drupal.org/node/3162480) - `parameters.render.config.debug`
 
 ## Tips
 
@@ -32,3 +35,10 @@ The examples (at `/hashcache``) touch a few different subject areas. Below is a 
 - https://support.acquia.com/hc/en-us/articles/360005167754-Drupal-Twig-cache
 - https://www.drupal.org/docs/drupal-apis/render-api/auto-placeholdering
 - https://api.drupal.org/api/drupal/core%21lib%21Drupal%21Core%21Render%21theme.api.php/group/themeable/9.2.x
+- https://www.drupal.org/node/3162480
+- https://weknowinc.com/blog/drupal-8-add-cache-metadata-render-arrays
+
+Also these links from Drupalcon Pittsburgh 2023 talks about debugging performance issues, including cache info:
+
+- [Performance Audits - The Top 8 Problems We Find & How To Fix Them](https://www.youtube.com/watch?v=-pBSXCzjGV8)
+- [Advanced Render Cache Debugging](https://www.youtube.com/watch?v=OW0AQivO8Bw)
