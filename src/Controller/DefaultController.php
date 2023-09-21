@@ -756,9 +756,7 @@ class DefaultController extends ControllerBase {
 
     return [
       'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $description,
+        '#markup' => $description,
         '#cache' => [
           'keys' => [
             'hashcache_desc_avoidBubbleKeys',
@@ -818,7 +816,8 @@ class DefaultController extends ControllerBase {
             ],
           ],
         ],
-        // time() output should change only when adding/changing a URL query string param.
+        // time() output should change only when adding/changing a URL query
+        // string param.
         'cache_contexts_url_query_args' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
