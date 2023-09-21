@@ -38,7 +38,7 @@ The examples (at `/hashcache``) touch a few different subject areas. Below is a 
 - https://www.drupal.org/node/3162480
 - https://weknowinc.com/blog/drupal-8-add-cache-metadata-render-arrays
 
-Also these links from Drupalcon Pittsburgh 2023 talks about debugging performance issues, including cache info:
+Also these links from DrupalCon Pittsburgh 2023 talks about debugging performance issues, including cache info:
 
 - [Performance Audits - The Top 8 Problems We Find & How To Fix Them](https://www.youtube.com/watch?v=-pBSXCzjGV8)
 - [Advanced Render Cache Debugging](https://www.youtube.com/watch?v=OW0AQivO8Bw)
