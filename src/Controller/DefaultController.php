@@ -318,9 +318,8 @@ class DefaultController extends ControllerBase {
       'description' => [
         '#markup' => $description,
         // Although the example here is about cache contexts, to get render
-        // cache debug output into the page markup (when enabled via
-        // services.yml - see link in README.md), we need/must supply render
-        // array '#cache' item with a 'keys' value.
+        // cache debug output into page markup (when enabled - see README),
+        // we need/must supply render array '#cache' item with a 'keys' value.
         '#cache' => [
           'keys' => [
             'url_query_args_key_description',
