@@ -577,6 +577,9 @@ class DefaultController extends ControllerBase {
   /**
    * Example of render array #cache keys CAUSING 'bubbling'/cache invalidation.
    *
+   * The more correct, but longer, description is that the LACK OF #cache 'keys'
+   * values allows 'bubbling' to occur and causes invalidation.
+   *
    * @return array
    *   Render array demonstrating #cache keys causing 'bubbling' of cache
    *   invalidation.
@@ -593,21 +596,21 @@ class DefaultController extends ControllerBase {
         For AUTHENTICATED users this array will get built and cached, by Dynamic Page Cache, after first load and the response will have (Dynamic Page Cache) header of "X-Drupal-Dynamic-Cache: MISS". There will be no (Internal Page Cache) "X-Drupal-Cache" header in the response.
       </p>
       <p>
-        If another request for the page is made BEFORE the shortest "max-age" value (10 seconds) of a render array element (3.) has elapsed, the response will be read from cache AND have header of "X-Drupal-Dynamic-Cache: HIT" meaning the "time()" values will remain the same.
+        If another request for the page is made BEFORE the shortest "max-age" value (10 seconds) of a render array element (number 3 in the list below) has elapsed, the response will be read from cache AND have header of "X-Drupal-Dynamic-Cache: HIT" meaning the "time()" values will remain the same.
       </p>
       <p>
-        If another request for the page is made AFTER the shortest "max-age" value (10 seconds) of a render array element (3.) has elapsed the ENTIRE array is invalidated due to the cache invalidation of the render element "bubbling" up through the array invalidating all the elements. The response will have header of "X-Drupal-Dynamic-Cache: MISS" and the "time()" values will be updated, the render array rebuilt and cached.
+        If another request for the page is made AFTER the shortest "max-age" value (10 seconds) of a render array element (number 3 in the list below) has elapsed the ENTIRE array is invalidated due to the cache invalidation of the render element "bubbling" up through the array invalidating all the elements. The response will have header of "X-Drupal-Dynamic-Cache: MISS" and the "time()" values will be updated, the render array rebuilt and cached.
       </p>
       <p>
-        For anonymous OR authenticated users, if we add a URL query string parameter (Eg. ?x=0), the (Internal Page Cache OR Dynamic Page Cache) cached version of the page is invalidated due to the last render array element (5.) having a #cache "contexts" value of "url.query_args" that "bubbles" through to the top of the render array.
+        For ANONYMOUS <strong>OR</strong> AUTHENTICATED users, if we add a URL query string parameter (Eg. <code>?x=0</code>), the (Internal Page Cache OR Dynamic Page Cache) cached version of the page is invalidated due to the last render array element (number 5 in the list below) having a #cache "contexts" value of "url.query_args" that "bubbles" through to the top of the render array.
       </p>
       <p>
-        For ANONYMOUS users, the next request, using the SAME query string parameter AND value (?x=0), will come via the Internal Page Cache, with the header "X-Drupal-Cache: HIT".
-        For ANONYMOUS users, the next request, using the SAME query string parameter AND a DIFFERENT value (?x=1), will invalidate the (Internal Page) Cache item, the "time()" values will be updated, and the response will have a header "X-Drupal-Cache: MISS".
+        For ANONYMOUS users, the next request, using the SAME query string parameter AND value (<code>?x=0</code>), will come via the Internal Page Cache, with the header "X-Drupal-Cache: HIT".
+        For ANONYMOUS users, the next request, using the SAME query string parameter AND a DIFFERENT value (<code>?x=1</code>), will invalidate the (Internal Page) Cache item, the "time()" values will be updated, and the response will have a header "X-Drupal-Cache: MISS".
+      </p>
       <p>
-      <p>
-        For AUTHENTICATED users, the next request, using the SAME query string AND value (?x=0) AND being within the shortest "max-age" value (10 seconds) of a render array element, will come via the Dynamic Page Cache, with the header "X-Drupal-Dynamic-Cache: HIT".
-        For AUTHENTICATED users, the next request, using the SAME query string AND a DIFFERENT value (?x=1) AND being within the shortest "max-age" value (10 seconds) of a render array element, will invalidate the (Dynamic Page) Cache item, the "time()" values will be updated, and the response will have a header "X-Drupal-Dynamic-Cache: MISS".
+        For AUTHENTICATED users, the next request, using the SAME query string AND value (<code>?x=0</code>) AND being within the shortest "max-age" value (10 seconds) of a render array element, will come via the Dynamic Page Cache, with the header "X-Drupal-Dynamic-Cache: HIT".
+        For AUTHENTICATED users, the next request, using the SAME query string AND a DIFFERENT value (<code>?x=1</code>) AND being within the shortest "max-age" value (10 seconds) of a render array element, will invalidate the (Dynamic Page) Cache item, the "time()" values will be updated, and the response will have a header "X-Drupal-Dynamic-Cache: MISS".
       </p>
       <p>
         The important thing to note for the last sentence above, for AUTHENTICATED users, is that, having been cached, the ENTIRE cached render array is invalidated, EITHER by the query string value changing (when requesting the page again within 10 seconds) OR by 10 seconds having elapsed.
@@ -616,15 +619,25 @@ class DefaultController extends ControllerBase {
 
     return [
       'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $description,
-        // Explicitly provide a #cache, for avoidance of doubt.
-        '#cache' => [],
+        '#markup' => $description,
+        // Although the example here is about cache bubbling, to get render
+        // cache debug output into page markup (when enabled - see README),
+        // we need/must supply render array '#cache' item with a 'keys' value.
+        '#cache' => [
+          'keys' => [
+            'bubbling_description',
+          ],
+        ],
       ],
       'data' => [
         '#type' => 'container',
         '#attributes' => $this->buildContainerAttributes(),
+        //
+        // NOTE: If render array debug is enabled, these elements WILL NOT
+        // output any debug markup (due to lack of 'keys'). THIS IS ON PURPOSE!
+        // This example is showing the behaviour of 'bubbling' and providing
+        // 'keys' affects that, as shown in subsequent module example.
+        //
         'cache_permanent_implicit' => [
           '#type' => 'html_tag',
           '#tag' => 'p',
