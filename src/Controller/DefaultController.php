@@ -293,54 +293,93 @@ class DefaultController extends ControllerBase {
         For ANONYMOUS and AUTHENTICATED users, on first request, the render array is built and cached.
       </p>
       <p>
-        The render array will be invalidated/rebuilt/re-cached when:
+        Various parts of render array will be invalidated/rebuilt/re-cached when:
       </p>
       <ul>
         <li>A URL query string param named 'delta' is added (when it hasn't previously existed) to the request URL</li>
+        <li>The value of the 'iteration' URL parameter value changes to a previously unused value</li>
         <li>The value of the 'delta' URL parameter value changes to a previously unused value</li>
       </ul>
       <p>
-        Using a previous value for an existing query string param will mean a cached version of the page/render array is used.
+        Using a previous value for an existing query string param will mean a cached version of the parts of the render array is used.
       </p>
       <p>
-        Adding, or changing, any other URL query string param won't invalidate the cached render array.
+        Adding, or changing, any other URL query string param won't invalidate the cached parts of the render array.
       </p>
       <p>
         Look at/compare the response cache debug headers 'X-Drupal-Cache' and/or 'X-Drupal-Dynamic-Cache', in the browser developer tools, for different requests to see if the cache was hit/miss.
+      </p>
+      <p>
+        Enable the render cache debug setting (parameters.render.config.debug) in services.yml and look at the generated page markup for 'CACHE-HIT:' debug output. For debug output to be generated for part of a render array, you need to supply a #cache item with a 'keys' value. See comments in the source code.
       </p>
     ");
 
     return [
       'description' => [
         '#markup' => $description,
+        // Although the example here is about cache contexts, to get render
+        // cache debug output into the page markup (when enabled via
+        // services.yml - see link in README.md), we need/must supply render
+        // array '#cache' item with a 'keys' value.
         '#cache' => [
-          'max-age' => Cache::PERMANENT,
+          'keys' => [
+            'url_query_args_key_description',
+          ],
         ],
       ],
       'content' => [
         '#type' => 'container',
         '#attributes' => $this->buildContainerAttributes(),
-        'data' => [
-          'timestamp' => [
-            '#type' => 'html_tag',
-            '#tag' => 'p',
-            '#value' => $this->t('Render array uses #cache with "contexts" key with "url.query_args:delta":  @time', ['@time' => time()]),
-            '#cache' => [
-              'contexts' => [
-                'url.query_args:delta',
-              ],
+        '#cache' => [
+          'keys' => [
+            'url_query_args_key_content',
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('Value here only updates when "delta" query string value updated:  @time', ['@time' => time()]),
+          '#cache' => [
+            'keys' => [
+              'url_query_args_key_timestamp',
+            ],
+            // Content will be updated ONLY when 'delta' query string value
+            // changes. If we add a 'url.query_args:iteration' to the list of
+            // contexts, the value will get updated when either the 'delta' OR
+            // the 'iteration' URL query string values are updated to a new
+            // (previously unused) value.
+            'contexts' => [
+              'url.query_args:delta',
             ],
           ],
-          'querystring' => [
-            'iteration' => [
-              '#type' => 'html_tag',
-              '#tag' => 'p',
-              '#value' => $this->t('Iteration query string value is @iteration.', ['@iteration' => $iteration]),
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('Iteration query string value is @iteration.', ['@iteration' => $iteration]),
+          '#cache' => [
+            'keys' => [
+              'url_query_args_key_querystring_iteration',
             ],
-            'delta' => [
-              '#type' => 'html_tag',
-              '#tag' => 'p',
-              '#value' => $this->t('Delta query string value is @delta.', ['@delta' => $delta]),
+            // Content will be updated ONLY when 'iteration' query string value
+            // changes.
+            'contexts' => [
+              'url.query_args:iteration',
+            ],
+          ],
+        ],
+        [
+          '#type' => 'html_tag',
+          '#tag' => 'p',
+          '#value' => $this->t('Delta query string value is @delta.', ['@delta' => $delta]),
+          '#cache' => [
+            'keys' => [
+              'url_query_args_key_querystring_delta',
+            ],
+            // Content will be updated ONLY when 'delta' query string value
+            // changes.
+            'contexts' => [
+              'url.query_args:delta',
             ],
           ],
         ],
@@ -353,6 +392,17 @@ class DefaultController extends ControllerBase {
           $this->t('Update query string "iteration" param value manually, NOT invalidating render array (keep the "delta" value the same)'),
           Link::createFromRoute('Update query string "delta" param value, invalidating render array ("iteration" value remains the same)', 'hashcache.default_controller_cacheContextsByUrlQueryArgsKey', ['iteration' => $iteration, 'delta' => $delta + 1])->toRenderable(),
         ],
+        '#cache' => [
+          'keys' => [
+            'url_query_args_key_links',
+          ],
+          // Content will be updated when EITHER OF 'iteration' or 'delta' query
+          // string values change, so the value(s) are used in the built links.
+          'contexts' => [
+            'url.query_args:iteration',
+            'url.query_args:delta',
+          ],
+        ],
       ],
       'docs_links' => [
         '#type' => 'link',
@@ -361,6 +411,11 @@ class DefaultController extends ControllerBase {
         '#options' => [
           'attributes' => [
             'target' => '_blank',
+          ],
+        ],
+        '#cache' => [
+          'keys' => [
+            'url_query_args_key_docs_links',
           ],
         ],
       ],
