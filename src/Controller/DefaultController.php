@@ -151,7 +151,9 @@ class DefaultController extends ControllerBase {
   public function cacheMaxAge() {
     $description = $this->t('
       <p>
-        For AUTHENTICATED users, the content below will be built/cached for 10 seconds after the first request.<br>
+        For AUTHENTICATED users, the content below will be built/cached for 10 seconds after the first request.
+      </p>
+      <p>
         For ANONYMOUS users, there are known issues with "max-age" (see link to docs below) the content will be built/cached permanently.
       </p>
       <p>
@@ -173,6 +175,13 @@ class DefaultController extends ControllerBase {
       'description' => [
         '#markup' => $description,
         '#cache' => [
+          // Although the example here is about cache max-age, to get render
+          // cache debug output into page markup (when enabled - see README),
+          // we need/must supply render array '#cache' item with a 'keys' value.
+          'keys' => [
+            'max_age_description',
+          ],
+          // Default is permanent if not supplied, but we're being explicit.
           'max-age' => Cache::PERMANENT,
         ],
       ],
@@ -182,6 +191,9 @@ class DefaultController extends ControllerBase {
         'data' => [
           '#markup' => $this->t('Render array uses #cache with a "max-age" value of 10 (seconds): @time', ['@time' => time()]),
           '#cache' => [
+            'keys' => [
+              'max_age_content',
+            ],
             'max-age' => 10,
           ],
         ],
@@ -194,6 +206,13 @@ class DefaultController extends ControllerBase {
           'attributes' => [
             'target' => '_blank'
           ],
+        ],
+        '#cache' => [
+          'keys' => [
+            'max_age_links',
+          ],
+          // Default is permanent if not supplied, but we're being explicit.
+          'max-age' => Cache::PERMANENT,
         ],
       ],
       $this->buildBackToIndexElement(),
