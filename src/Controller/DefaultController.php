@@ -1022,9 +1022,7 @@ class DefaultController extends ControllerBase {
 
     return [
       'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $description,
+        '#markup' => $description,
         '#cache' => [
           'keys' => [
             'hashcache_description_lazyBuilder',
@@ -1094,6 +1092,11 @@ class DefaultController extends ControllerBase {
         ],
       ],
       'links' => [
+        '#cache' => [
+          'keys' => [
+            'lazy_build_links',
+          ],
+        ],
         [
           '#type' => 'link',
           '#title' => $this->t("Drupal.org documentation for #lazy_builder"),
