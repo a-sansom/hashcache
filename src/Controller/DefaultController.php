@@ -503,6 +503,7 @@ class DefaultController extends ControllerBase {
     $cacheTags = [];
 
     if ($this->currentUser->isAuthenticated()) {
+      // @todo Should inject/use entity type manager not static method.
       // Get the full Drupal User entity for the authenticated user.
       /** @var \Drupal\user\Entity\User $entity */
       $entity = User::load($this->currentUser->id());
@@ -517,7 +518,12 @@ class DefaultController extends ControllerBase {
       'description' => [
         '#markup' => $description,
         '#cache' => [
-          'max-age' => Cache::PERMANENT,
+          // Although the example here is about cache tags, to get render
+          // cache debug output into page markup (when enabled - see README),
+          // we need/must supply render array '#cache' item with a 'keys' value.
+          'keys' => [
+            'cache_tags_description',
+          ],
         ],
       ],
       'content' => [
@@ -528,11 +534,20 @@ class DefaultController extends ControllerBase {
           '#tag' => 'p',
           '#value' => $this->t('@userName the time is @time', ['@userName' => $this->currentUser->getDisplayName(), '@time' => time()]),
           '#cache' => [
+            'keys' => [
+              'cache_tags_content_data',
+            ],
             'tags' => $cacheTags,
           ],
         ],
       ],
       'docs_links' => [
+        '#type' => 'container',
+        '#cache' => [
+          'keys' => [
+            'cache_tags_docs_links',
+          ],
+        ],
         [
           '#type' => 'link',
           '#title' => $this->t("Drupal.org documentation for #cache['tags']"),
