@@ -42,3 +42,7 @@ Also these links from Drupalcon Pittsburgh 2023 talks about debugging performanc
 
 - [Performance Audits - The Top 8 Problems We Find & How To Fix Them](https://www.youtube.com/watch?v=-pBSXCzjGV8)
 - [Advanced Render Cache Debugging](https://www.youtube.com/watch?v=OW0AQivO8Bw)
+
+## Example of render cache debug setting output
+
+![Browser console showing debug markup](render_cache_debug_output_example.png)
