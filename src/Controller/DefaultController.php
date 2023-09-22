@@ -1151,15 +1151,16 @@ class DefaultController extends ControllerBase {
         Example returns a render array which contains an "inline" render array item with some semi-dynamic content, that is cached for 30 seconds alongside a sibling render array item that is themed by a Twig template and permanently cached.
       </p>
       <p>
-        This approach is applicable for Dynamic Page Cache-d content (AUTHENTICATED users), as, the content needs to change sometimes. For ANONYMOUS users using the Internal Page Cache, this page is built once, cached, and remains the same until caches are rebuilt/cleared.
+        This approach is applicable for Dynamic Page Cache-d content (AUTHENTICATED users), as, the content needs to change sometimes.
+      </p>
+      <p>
+        For ANONYMOUS users using the Internal Page Cache, this page is built once, cached, and remains the same until caches are rebuilt/cleared.
       </p>
     ');
 
     return [
       'description' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $description,
+        '#markup' => $description,
         '#cache' => [
           'keys' => [
             'hashcache_description_avoidExpense',
@@ -1205,9 +1206,7 @@ class DefaultController extends ControllerBase {
         ],
       ],
       'note' => [
-        '#type' => 'html_tag',
-        '#tag' => 'p',
-        '#value' => $this->t('
+        '#markup' => $this->t('
           <p>
             NOTE: One potentially confusing thing with this example is that the response "X-Drupal-Dynamic-Cache" cache debug header returns a "MISS" value when re-requesting the page after 30 seconds.
           </p>

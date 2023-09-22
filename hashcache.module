@@ -45,7 +45,7 @@ function template_preprocess_avoid_expense(&$variables) {
   // template preprocess.
   //
   // Could represent making an HTTP request to another system (via a custom
-  // Drupal service), to get data for display, for instance.s
+  // Drupal service), to get data for display, for instance.
   //
   // In the above case, by caching the output, we're showing that we're saving
   // hitting an external API (or whatever takes time to do) each time, as the
