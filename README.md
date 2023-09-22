@@ -45,4 +45,4 @@ Also these links from DrupalCon Pittsburgh 2023 talks about debugging performanc
 
 ## Example of render cache debug setting output
 
-![Browser console showing debug markup](render_cache_debug_output_example.png)
+![Browser console showing debug markup](images/render_cache_debug_output_example.png)
